@@ -3,26 +3,38 @@
   "version": "1.0.0",
   "description": "Interface desktop pour programmer le RobotPi avec téléversement via ampy",
   "main": "electron/main.js",
-  "scripts": {
-    "start": "electron .",
-    "dev": "NODE_ENV=development electron .",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux"
+  "author": "RATTE MATTHIAS",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matelec/RobotPi-IDE.git"
   },
   "keywords": [
     "robotpi",
     "raspberry-pi-pico",
     "micropython",
+    "blockly",
     "ampy",
     "robot",
-    "education"
+    "education",
+    "TB6612FNG",
+    "VL53L0X"
   ],
-  "author": "RATTE MATTHIAS",
-  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder --linux",
+    "build:appimage": "electron-builder --linux AppImage",
+    "build:deb": "electron-builder --linux deb",
+    "build:rpm": "electron-builder --linux rpm",
+    "build:snap": "electron-builder --linux snap",
+    "build:all": "electron-builder --linux AppImage deb rpm",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac"
+  },
   "dependencies": {
-    "serialport": "^12.0.0"
+    "serialport": "^12.0.0",
+    "@serialport/parser-readline": "^12.0.0"
   },
   "devDependencies": {
     "electron": "^28.3.3",
@@ -30,33 +42,132 @@
   },
   "build": {
     "appId": "com.robotpi.ide",
-    "productName": "robotpi ide",
+    "productName": "RobotPi IDE",
     "directories": {
-      "output": "dist"
-    },
-    "files": [
+      "output": "dist",
+      "buildResources": "assets"
+  },
+  "files": [
       "electron/**/*",
-      "index.html",
-      "css/**/*",
-      "js/**/*",
-      "assets/**/*"
+      "app/**/*",
+      "assets/**/*",
+      "micropython/**/*",
+      "!app/**/*.md",
+      "!**/*.map",
+      "!**/node_modules/**/*"
     ],
-    "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico"
-    },
-    "mac": {
-      "target": "dmg",
-      "icon": "assets/icon.icns",
-      "category": "public.app-category.education"
-    },
+    "extraResources": [
+      {
+        "from": "micropython",
+        "to": "micropython",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "linux": {
       "target": [
-        "AppImage",
-        "deb"
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Development;Education;",
+      "icon": "assets/icon.png",
+      "desktop": {
+        "Name": "RobotPi IDE",
+        "Comment": "Interface de programmation visuelle pour Raspberry Pi Pico",
+        "GenericName": "Robot Programming IDE",
+        "Keywords": "robot;pico;micropython;blockly;education;",
+        "Categories": "Development;Education;",
+        "Terminal": false,
+        "Type": "Application",
+        "StartupNotify": true
+      },
+      "executableName": "robotpi-ide",
+      "synopsis": "Interface de programmation visuelle pour robot RobotPi",
+      "description": "Application desktop multiplateforme pour programmer facilement un robot mobile basé sur Raspberry Pi Pico avec interface Blockly et téléversement direct via ampy."
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
       "icon": "assets/icon.png",
-      "category": "Education"
+      "artifactName": "${productName}-${version}-Setup.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "category": "public.app-category.education",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": null,
+      "entitlementsInherit": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "RobotPi IDE"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "title": "RobotPi IDE ${version}"
+    },
+    "deb": {
+      "depends": [
+        "gconf2",
+        "gconf-service",
+        "libnotify4",
+        "libappindicator1",
+        "libxtst6",
+        "libnss3"
+      ],
+      "packageCategory": "devel",
+      "priority": "optional"
+    },
+    "rpm": {
+      "depends": [
+        "libXScrnSaver"
+      ],
+      "packageCategory": "Development/Tools"
+    },
+    "appImage": {
+      "license": "MIT",
+      "category": "Development"
     }
   }
 }
