@@ -50,11 +50,12 @@
   "files": [
       "electron/**/*",
       "app/**/*",
+      "app/**/**/*",
       "assets/**/*",
       "micropython/**/*",
       "!app/**/*.md",
-      "!**/*.map",
-      "!**/node_modules/**/*"
+      "!micropython/**/*.md",
+      "!**/*.map"
     ],
     "extraResources": [
       {
