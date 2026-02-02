@@ -31,11 +31,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
     resetBoard: (port) => 
         ipcRenderer.invoke('reset-board', { port }),
 
-    // ⭐ NOUVEAU : Vérifier ampy
+    // Vérifier ampy
     checkAmpy: () => 
         ipcRenderer.invoke('check-ampy'),
 
-     // Moniteur série
+    // ⭐ NOUVEAU : Obtenir le chemin des ressources
+    getResourcePath: (relativePath) => 
+        ipcRenderer.invoke('get-resource-path', relativePath),
+
+    // Moniteur série
     startSerialMonitor: (port) => 
         ipcRenderer.invoke('start-serial-monitor', port),
     

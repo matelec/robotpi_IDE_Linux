@@ -13,6 +13,20 @@ let ampyPath = null;
 let serialMonitor = null;
 let serialParser = null;
 
+// ==========================================
+// Fonction pour obtenir le chemin des ressources
+// ==========================================
+
+function getResourcePath(relativePath) {
+    if (app.isPackaged) {
+        // En production (AppImage, .deb, etc.)
+        return path.join(process.resourcesPath, relativePath);
+    } else {
+        // En développement
+        return path.join(__dirname, '..', relativePath);
+    }
+}
+
 // Créer la fenêtre principale
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -115,6 +129,18 @@ function detectAmpyPath() {
     console.warn('⚠️ ampy non trouvé');
     console.log('💡 Installez ampy avec: pip3 install adafruit-ampy');
 }
+
+// ==========================================
+// Handler pour obtenir le chemin des ressources
+// ==========================================
+
+ipcMain.handle('get-resource-path', (event, relativePath) => {
+    const fullPath = getResourcePath(relativePath);
+    console.log('📂 Chemin demandé:', relativePath);
+    console.log('📂 Chemin résolu:', fullPath);
+    console.log('📂 Fichier existe:', fs.existsSync(fullPath));
+    return fullPath;
+});
 
 // ==========================================
 // Moniteur série
@@ -293,23 +319,25 @@ function executeAmpy(port, args) {
 
 ipcMain.handle('upload-file', async (event, { port, localPath, remotePath }) => {
     try {
-        const absolutePath = path.join(app.getAppPath(), localPath);
+        console.log('📤 Upload file - Chemin reçu:', localPath);
         
-        console.log('Chemin absolu:', absolutePath);
+        // Le chemin est déjà absolu (résolu par getResourcePath dans le renderer)
+        const absolutePath = localPath;
+        
+        console.log('📂 Chemin absolu:', absolutePath);
+        console.log('📂 Fichier existe:', fs.existsSync(absolutePath));
         
         if (!fs.existsSync(absolutePath)) {
             throw new Error(`Fichier non trouvé: ${absolutePath}`);
         }
         
-        const { execSync } = require('child_process');
-        const command = `ampy --port ${port} put "${absolutePath}" ${remotePath}`;
+        // Utiliser executeAmpy pour plus de robustesse
+        await executeAmpy(port, ['put', absolutePath, remotePath]);
         
-        execSync(command, { encoding: 'utf8' });
-        
-        return { success: true };
+        return { success: true, message: `Fichier téléversé: ${remotePath}` };
     } catch (error) {
         console.error('Erreur upload-file:', error);
-        return { success: false, error: error.message };
+        return { success: false, error: error.error || error.message };
     }
 });
 

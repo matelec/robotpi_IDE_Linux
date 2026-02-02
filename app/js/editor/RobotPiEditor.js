@@ -720,11 +720,23 @@ async function installLibrary() {
         return;
     }
     
+    const wasMonitorRunning = serialMonitor.isRunning;
+    
     try {
+        // Arrêter le moniteur si actif
+        if (wasMonitorRunning) {
+            logConsole('⏸️ Arrêt temporaire du moniteur...', 'info');
+            await stopSerialMonitor();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        
         logConsole('📚 Installation de robotPi.py...', 'info');
         
-        const localPath = 'micropython/robotPi.py';
+        // ⭐ Utiliser getResourcePath pour obtenir le bon chemin
+        const localPath = await window.electronAPI.getResourcePath('micropython/robotPi.py');
         const remotePath = 'robotPi.py';
+        
+        logConsole(`📂 Chemin local: ${localPath}`, 'info');
         
         const result = await window.electronAPI.uploadFile(
             appState.currentPort,
@@ -741,8 +753,20 @@ async function installLibrary() {
     } catch (error) {
         logConsole('❌ Erreur: ' + error.message, 'error');
         showToast('Erreur d\'installation', 'error');
+    } finally {
+        // Redémarrer le moniteur si nécessaire
+        if (wasMonitorRunning) {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                logConsole('🔄 Redémarrage du moniteur...', 'info');
+                await startSerialMonitor();
+            } catch (monitorError) {
+                logConsole('⚠️ Moniteur non redémarré', 'warning');
+            }
+        }
     }
 }
+
 
 /**
  * Ferme un modal
