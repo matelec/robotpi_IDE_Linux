@@ -73,8 +73,8 @@ Blockly.Python.forBlock['robotpi_initialiser'] = function () {
         '\n' +
         '# Configuration\n' +
         'robot = RobotPi(\n' +
-        '    pwm_g=0, in1_g=1, in2_g=2,\n' +
-        '    pwm_d=3, in1_d=4, in2_d=5,\n' +
+        '    pwm_g=0, in1_g=3, in2_g=2,\n' +
+        '    pwm_d=1, in1_d=4, in2_d=5,\n' +
         '    stby_pin=6, led_pin=15, nb_leds=4,\n' +
         '    pin_bouton=14, i2c=i2c\n' +
         ')\n' +
