@@ -565,6 +565,7 @@ class RobotPi:
             v = vitesse if vitesse is not None else self.vitesse_defaut
             self.reculer_pendant(v, 0.5)
             self.tourner_droite_pendant(v, 0.5)
+            self.avancer_pendant()
             return True
         return False
 

@@ -43,3 +43,6 @@ projects/
 # Cache
 .cache/
 .electron-cache/
+
+#AppImage
+*.AppImage
