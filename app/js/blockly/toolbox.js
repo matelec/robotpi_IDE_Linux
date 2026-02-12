@@ -49,11 +49,12 @@ const toolbox = {
             colour:  '#FBC02D',
             contents: [
                 { kind: 'block', type: 'robotpi_allumer_leds' },
+                { kind: 'block', type: 'robotpi_allumer_leds_intensite' },
                 { kind: 'block', type: 'robotpi_allumer_led' },
+                { kind: 'block', type: 'robotpi_allumer_led_intensite' },
                 { kind: 'block', type: 'robotpi_eteindre_leds' },
                 { kind: 'block', type: 'robotpi_eteindre_led' },
-                { kind: 'block', type: 'robotpi_clignoter_leds' },
-                { kind: 'block', type: 'robotpi_luminosite_leds' },
+                { kind: 'block', type: 'robotpi_clignoter_leds' }
             ]
         },
 

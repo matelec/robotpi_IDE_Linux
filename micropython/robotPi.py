@@ -521,14 +521,21 @@ class RobotPi:
             self.eteindre_leds()
             time.sleep(intervalle)
     
-    def definir_luminosite(self, luminosite):
+    def allumer_leds_luminosite(self, r, g, b, luminosite):
         """Ajuste la luminosité globale (0.0 à 1.0)"""
         self._verifier_leds()
         luminosite = max(0.0, min(1.0, luminosite))
         for i in range(self.nb_leds):
-            r, g, b = self.leds[i]
             self.leds[i] = (int(r * luminosite), int(g * luminosite), int(b * luminosite))
         self.leds.write()
+
+    def allumer_led_luminosite(self, index, r, g, b, luminosite):
+        """Ajuste la luminosité globale (0.0 à 1.0)"""
+        self._verifier_leds()
+        if 0 <= index < self.nb_leds:
+            luminosite = max(0.0, min(1.0, luminosite))
+            self.leds[index] = (int(r * luminosite), int(g * luminosite), int(b * luminosite))
+            self.leds.write()
         
     
     # === Méthodes pour le capteur de distance VL53L0X ===

@@ -23,6 +23,32 @@ Blockly.Blocks['robotpi_allumer_leds'] = {
     }
 };
 
+Blockly.Blocks['robotpi_allumer_leds_intensite'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField('Allumer toutes les LEDs en')
+            .appendField(new Blockly.FieldDropdown([
+                ['Rouge', 'rouge'],
+                ['Orange', 'orange'],
+                ['Jaune', 'jaune'],
+                ['Vert', 'vert'],
+                ['Bleu', 'bleu'],
+                ['Indigo', 'indigo'],
+                ['Violet', 'violet']
+            ]), 'COULEUR')
+
+            .appendField('avec une intensité de')
+            .appendField(new Blockly.FieldNumber(100, 0, 100, 1), 'INTENSITE')
+            .appendField('%');
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour('#FBC02D');
+        this.setTooltip('Allume toutes les LEDs avec la couleur choisie');
+        this.setHelpUrl('');
+    }
+};
+
 Blockly.Blocks['robotpi_allumer_led'] = {
     init: function () {
         this.appendDummyInput()
@@ -43,6 +69,34 @@ Blockly.Blocks['robotpi_allumer_led'] = {
         this.setNextStatement(true, null);
         this.setColour('#FBC02D');
         this.setTooltip('Allume la LED spécifiée avec la couleur choisie');
+        this.setHelpUrl('');
+    }
+};
+
+Blockly.Blocks['robotpi_allumer_led_intensite'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField('Allumer LED n°')
+            .appendField(new Blockly.FieldNumber(1, 1, 8, 1), 'NUMERO_LED')
+            .appendField('en')
+            .appendField(new Blockly.FieldDropdown([
+                ['Rouge', 'rouge'],
+                ['Orange', 'orange'],
+                ['Jaune', 'jaune'],
+                ['Vert', 'vert'],
+                ['Bleu', 'bleu'],
+                ['Indigo', 'indigo'],
+                ['Violet', 'violet']
+            ]), 'COULEUR')
+
+            .appendField('avec une intensité de')
+            .appendField(new Blockly.FieldNumber(100, 0, 100, 1), 'INTENSITE')
+            .appendField('%');
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour('#FBC02D');
+        this.setTooltip('Allume la LED spécifiée avec la couleur choisie et l\'intensité choisie');
         this.setHelpUrl('');
     }
 };
@@ -95,21 +149,6 @@ Blockly.Blocks['robotpi_clignoter_leds'] = {
         this.setNextStatement(true, null);
         this.setColour('#FBC02D');
         this.setTooltip('Fait clignoter toutes les LEDs avec la couleur choisie pendant un temps donné');
-        this.setHelpUrl('');
-    }
-};
-
-Blockly.Blocks['robotpi_luminosite_leds'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField('Régler la luminosité des LEDs à')
-            .appendField(new Blockly.FieldNumber(100, 0, 100, 1), 'LUMINOSITE')
-            .appendField('%');
-
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour('#FBC02D');
-        this.setTooltip('Règle la luminosité de toutes les LEDs (0 à 100%)');
         this.setHelpUrl('');
     }
 };
