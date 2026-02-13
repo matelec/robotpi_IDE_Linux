@@ -524,7 +524,7 @@ class RobotPi:
     def allumer_leds_luminosite(self, r, g, b, luminosite):
         """Ajuste la luminosité globale (0.0 à 1.0)"""
         self._verifier_leds()
-        luminosite = max(0.0, min(1.0, luminosite))
+        luminosite = max(0.0, min(1.0, luminosite/100))
         for i in range(self.nb_leds):
             self.leds[i] = (int(r * luminosite), int(g * luminosite), int(b * luminosite))
         self.leds.write()
@@ -532,8 +532,8 @@ class RobotPi:
     def allumer_led_luminosite(self, index, r, g, b, luminosite):
         """Ajuste la luminosité globale (0.0 à 1.0)"""
         self._verifier_leds()
+        luminosite = max(0.0, min(1.0, luminosite/100))
         if 0 <= index < self.nb_leds:
-            luminosite = max(0.0, min(1.0, luminosite))
             self.leds[index] = (int(r * luminosite), int(g * luminosite), int(b * luminosite))
             self.leds.write()
         

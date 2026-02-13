@@ -1,7 +1,7 @@
 // fichier de génération Python pour les blocs Blockly personnalisés capteurs RobotPi
 
 Blockly.Python.forBlock['robotpi_obstacle_detection'] = function () {
-    const code = 'robot.obstacle_devant()';
+    const code = 'robot.obstacle_detecte()';
     return [code, Blockly.Python.ORDER_FUNCTION_CALL];
 };
 
