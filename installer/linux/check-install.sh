@@ -194,7 +194,7 @@ main() {
         echo ""
     fi
     
-    echo -e "${GREEN}✓ Vérification terminée${NC}"
+    echo -e "${GREEN}✓ Vérification termrobotpi_obstacle_detectioninée${NC}"
     echo ""
     echo "Pour lancer RobotPi IDE:"
     echo "  • Terminal: robotpi-ide"
